@@ -1,0 +1,46 @@
+name: Execute script
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: Action
+        required: true
+        type: choice
+        options:
+          - upsert
+          - remove
+          - disable
+
+      plugins:
+        description: Plugins
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  execute:
+    name: ${{ inputs.action }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: scripts
+          path: scripts
+      - uses: actions/checkout@v3
+        with:
+          ref: proxy
+          path: proxy
+
+      - name: Execute script
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          cd proxy
+          node ../scripts/$ACTION.mjs
+          git push
+        env:
+          ACTION: ${{ inputs.action }}
+          PLUGINS: ${{ inputs.plugins }}
