@@ -17,14 +17,28 @@ on:
         required: true
         type: string
 
+      channel:
+        description: Patchbay channel
+        required: false
+        type: string
+
 permissions:
   contents: write
+  actions: read
 
 jobs:
   execute:
     name: ${{ inputs.action }}
     runs-on: ubuntu-latest
     steps:
+      - name: Notify dispatcher about execution
+        if: ${{ inputs.channel }}
+        run: |
+          URL=$(gh api "/repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/jobs" -q ".jobs[0].html_url")
+          curl https://patchbay.pub/pubsub/$CHANNEL -d "$URL"
+        env:
+          CHANNEL: ${{ inputs.channel }}
+          GH_TOKEN: ${{ github.token }}
       - uses: actions/checkout@v3
         with:
           ref: scripts
