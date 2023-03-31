@@ -21,6 +21,7 @@ for (const pl of inputs) {
     try {
       manifest = await mReq.json();
       manifest.main = "index.js";
+      manifest.vendetta ??= {};
       manifest.vendetta.original = source;
     } catch {
       throw "Malformed plugin manifest JSON";
