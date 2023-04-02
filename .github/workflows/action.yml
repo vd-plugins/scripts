@@ -46,6 +46,7 @@ jobs:
       - uses: actions/checkout@v3
         with:
           repository: vd-plugins/proxy
+          token: ${{ secrets.PROXY_TOKEN }}
           path: proxy
 
       - name: Execute script
