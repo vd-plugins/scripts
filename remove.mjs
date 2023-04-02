@@ -1,5 +1,4 @@
 import * as fs from "fs/promises";
-import * as path from "path";
 import { promisify } from "util";
 import { exec as cbExec } from "child_process";
 const exec = promisify(cbExec);
