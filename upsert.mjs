@@ -4,6 +4,9 @@ import { promisify } from "util";
 import { exec as cbExec } from "child_process";
 const exec = promisify(cbExec);
 
+const writeSummary = (text) => fs.appendFile(process.env.GITHUB_STEP_SUMMARY, text);
+await writeSummary("# Upsert plugin(s)\n");
+
 /** @type URL[] */
 const inputs = process.env.PLUGINS.split(" ").map((pl) => new URL(pl.replace(/\/*$/, "/")));
 for (const pl of inputs) pl.pathname = pl.pathname.replace(/\/+/g, "/");
@@ -52,6 +55,10 @@ for (const pl of inputs) {
     if (commit.stderr) throw commit.stderr;
     
     console.log("Successfully upserted");
+
+    const now = await exec(`git rev-list HEAD -1`);
+    if (!now.stderr)
+      await writeSummary(`- https://vd-plugins.github.io/proxy/${source}  \nhttps://github.com/vd-plugins/proxy/commit/${now.stdout.trim()}\n\n`);
   } catch (e) {
     console.error(e);
   }

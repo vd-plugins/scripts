@@ -24,7 +24,6 @@ on:
 
 permissions:
   contents: write
-  actions: read
 
 jobs:
   execute:
@@ -34,11 +33,9 @@ jobs:
       - name: Notify dispatcher about execution
         if: ${{ inputs.channel }}
         run: |
-          URL=$(gh api "/repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/jobs" -q ".jobs[0].html_url")
-          curl https://patchbay.pub/pubsub/$CHANNEL -d "$URL"
+          curl https://patchbay.pub/pubsub/$CHANNEL -d "https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
         env:
           CHANNEL: ${{ inputs.channel }}
-          GH_TOKEN: ${{ github.token }}
 
       - uses: actions/checkout@v3
         with:
