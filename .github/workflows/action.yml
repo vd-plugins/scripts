@@ -18,7 +18,7 @@ on:
         type: string
 
       channel:
-        description: Patchbay channel
+        description: Conduit channel
         required: false
         type: string
 
@@ -33,9 +33,10 @@ jobs:
       - name: Notify dispatcher about execution
         if: ${{ inputs.channel }}
         run: |
-          curl https://patchbay.pub/pubsub/$CHANNEL -d "https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+          curl https://vd.k6.tf/conduit/$CHANNEL -H "Authorization: Conduit $TOKEN" -d "https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
         env:
           CHANNEL: ${{ inputs.channel }}
+          TOKEN: ${{ secrets.CONDUIT_TOKEN }}
 
       - uses: actions/checkout@v3
         with:
