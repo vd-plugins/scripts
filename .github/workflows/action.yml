@@ -33,7 +33,7 @@ jobs:
       - name: Notify dispatcher about execution
         if: ${{ inputs.channel }}
         run: |
-          curl https://vd.k6.tf/conduit/$CHANNEL -H "Authorization: Conduit $TOKEN" -d "https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+          curl https://tracker.vendetta.rocks/conduit/$CHANNEL -H "Authorization: Conduit $TOKEN" -d "https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
         env:
           CHANNEL: ${{ inputs.channel }}
           TOKEN: ${{ secrets.CONDUIT_TOKEN }}
