@@ -11,6 +11,7 @@ on:
           - upsert
           - remove
           - disable
+          - redirect
 
       plugins:
         description: Plugins

@@ -36,7 +36,7 @@ for (const pl of inputs) {
     const add = await exec("git add --all");
     if (add.stderr) throw add.stderr;
 
-    const commit = await exec(`git commit --allow-empty -m "[CI] Upserted ${pl}"`);
+    const commit = await exec(`git commit --allow-empty -m "[CI] Disabled ${pl}"`);
     if (commit.stderr) throw commit.stderr;
     
     console.log("Successfully disabled");
