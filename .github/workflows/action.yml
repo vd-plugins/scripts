@@ -1,5 +1,7 @@
 name: Execute script
 
+concurrency: execute
+
 on:
   workflow_dispatch:
     inputs:
@@ -39,10 +41,10 @@ jobs:
           CHANNEL: ${{ inputs.channel }}
           TOKEN: ${{ secrets.CONDUIT_TOKEN }}
 
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           path: scripts
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           repository: vd-plugins/proxy
           token: ${{ secrets.PROXY_TOKEN }}
